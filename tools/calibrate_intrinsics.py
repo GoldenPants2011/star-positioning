@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """内参标定：从采集包里读帧，检测点阵，用 cv2.calibrateCamera 求 fx/fy/cx/cy + 畸变。
 
 用法：

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 package com.dsh.starpos.astro
 
 /** 水镜（水平液面）几何：托盘距离与"直射像/反射像"在画面里的预测位置。 */

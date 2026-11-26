@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """月面几何验证：从"亮部"反推月面几何中心。
 
 问题：非满月时，检测到的亮部质心 ≠ 月面中心（半月时理论偏移 4R/3π ≈ 0.42R）。

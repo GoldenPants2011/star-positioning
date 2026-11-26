@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 package com.dsh.starpos.core
 
 import java.net.DatagramPacket

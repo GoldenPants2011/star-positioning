@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """把采集包里的 raw16 帧转成 PNG（自动拉伸），用于人工回忆/排查。
 
 用法：python tools/bundle_to_images.py <zip> [输出目录]

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """生成 A4 打印用点阵标定板（9 列 × 13 行，20 mm 间距，点径 3.6 mm）。
 
 与 tools/calibrate_intrinsics.py 的默认参数一致：

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """Build the bundled bright-star catalog asset from the HYG database (v41).
 
 Output: app/src/main/assets/stars.bin

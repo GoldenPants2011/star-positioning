@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 package com.dsh.starpos
 
 import com.dsh.starpos.android.CameraProbe

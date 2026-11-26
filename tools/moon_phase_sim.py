@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 """用真实满月照片合成不同相位，量化"月缘弧拟合圆心"的精度。
 
 问题：非满月时亮部质心 ≠ 月面几何中心（半月偏移 4R/3π≈0.424R）。

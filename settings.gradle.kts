@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 pluginManagement {
   repositories {
     maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
