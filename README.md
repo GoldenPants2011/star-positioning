@@ -156,7 +156,10 @@ docs/                      需求/UI 截图等
 - 帧、IMU、GNSS 全部在**本机**处理；除用户主动点"网络对时/分享/导出"外不联网；
 - 采集包含位置信息，属于敏感数据：**不公开上传**、不用于跟踪他人；仓库与分支当前均为私有；
 - 分享/导出由用户显式操作；ZIP 在 `Android/data/com.dsh.starpos/files/sessions`，可删除/回收站；
-- 未来若开源：需要先清理历史中的现场数据/私有路径/设备信息，并补齐 LICENSE/构建说明。
+- **开源准备**：0.9.88 已重写历史并清除调试用第三方素材；许可证已补齐
+  （代码 GPL-3.0；HYG 星表及其派生数据 CC BY-SA 4.0），
+  见 [LICENSE](LICENSE) 与 [THIRD-PARTY.md](THIRD-PARTY.md)。
+  `PROGRESS.md` 中仍保留少量本机绝对路径，可按需脱敏。
 
 ---
 
@@ -196,3 +199,38 @@ docs/                      需求/UI 截图等
 - 频率：每次外场采集/版本里程碑后各一次；至少保留最近 2–3 份，且**定期做恢复演练**。
 - 不要把私钥、PAT、设备备份、现场位置数据放进公开仓库；开源前先清理历史。
 - 网络可用时推送 `ui-redesign` 与 `opensource-prep`，可减少对本地备份的依赖（但不替代离线备份）。
+
+---
+
+## 10. 许可证
+
+本项目以 **GNU General Public License v3.0 或更新版本（GPL-3.0-or-later）** 发布，
+完整条款见 [LICENSE](LICENSE)。
+
+```text
+星光定位 (Star Position)
+Copyright (C) 2026 GoldenPants2011
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+```
+
+- **分发 APK 即属于分发二进制**：按 GPL-3.0 §6，需向接收者提供对应源码
+  （给出本仓库链接即可），并保留上述版权与担保声明；
+- **星表数据**：HYG Database v4.1 及其派生的 `stars.bin` 为 **CC BY-SA 4.0**。
+  Creative Commons 已声明 CC BY-SA 4.0 与 GPLv3 **单向兼容**，
+  因此可与 GPL-3.0 代码合并分发；
+- **第三方组件**：AndroidX / Compose / Kotlin / Commons-Math3 均为 Apache-2.0，
+  与 GPLv3 兼容；JUnit 仅用于测试。详见 [THIRD-PARTY.md](THIRD-PARTY.md)。
+
+SPDX 标识：`GPL-3.0-or-later`（代码） · `CC-BY-SA-4.0`（星表数据）
