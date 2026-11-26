@@ -67,7 +67,7 @@ object SessionJointAnalyzer {
         else -> "legacy"
     }
 
-    fun extract(context: Context, file: File, starVertical: StarVertical? = StarVertical.DEFAULT, treatAsMirror: Boolean = false): SessionData {
+    fun extract(context: Context, file: File, starVertical: StarVertical? = null, treatAsMirror: Boolean = false): SessionData {
         val kind = kindOf(file)
         if (kind == "ext" || kind == "cal") {
             return SessionData(file, kind, "", null, null, null, emptyList(), null, "该类型包不参与自动解算（标定包）")

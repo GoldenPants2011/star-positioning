@@ -62,7 +62,10 @@ class ImuBiasCalibrator(context: Context) : SensorEventListener {
 object AccelBiasStore {
     private const val FILE = "accel-bias.json"
 
-    class Entry(val bias: DoubleArray, val g: Double, val rms: Double, val note: String, val savedAtUtcMs: Long)
+    class Entry(val bias: DoubleArray, val g: Double, val rms: Double, val note: String, val savedAtUtcMs: Long) {
+        /** 首次安装写入的零值不算已标定。 */
+        val calibrated: Boolean get() = note.isNotBlank() && !note.startsWith("首次安装置零")
+    }
 
     fun load(context: Context): Entry? = runCatching {
         val f = File(context.filesDir, FILE)

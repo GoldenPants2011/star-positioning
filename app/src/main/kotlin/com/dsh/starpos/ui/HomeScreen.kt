@@ -150,7 +150,7 @@ fun HomeScreen(onOpenCapture: () -> Unit = {}, onOpenSessions: () -> Unit = {}) 
                     )
                     Spacer(Modifier.height(14.dp))
                     Text(
-                        "v${BuildConfig.VERSION_NAME} · 内部私有版",
+                        "v${BuildConfig.VERSION_NAME} · 开源版 · GPL-3.0",
                         color = AppDim,
                         fontSize = 12.sp,
                     )
@@ -770,7 +770,7 @@ private fun StatusContent(
                     ),
                 )
             } ?: "未标定（采集页 → IMU 零偏标定）",
-            AccelBiasStore.load(context) != null,
+            AccelBiasStore.load(context)?.calibrated == true,
         )
         StatusRow(
             "GNSS",

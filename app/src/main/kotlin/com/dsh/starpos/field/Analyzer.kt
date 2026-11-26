@@ -88,7 +88,7 @@ object FieldAnalyzer {
          * 仅星光定位分支的垂直修正（设备系小倾角；不影响日月/两体/水镜分支）。
          * 2026-11-24 用旧星光会话 + GNSS 真值拟合，留一会话交叉验证中位 ~25 km。
          */
-        starVertical: StarVertical? = StarVertical.DEFAULT,
+        starVertical: StarVertical? = null,
         /** 老会话没有 manifest 零偏时的外部兜底（m/s²，设备系）。 */
         accelBiasOverride: DoubleArray? = null,
         accelMapOverride: DoubleArray? = null,

@@ -45,16 +45,14 @@ class StarVertical(
 
     companion object {
         /**
-         * 内置默认（2026-11-24 重拟合，已应用岁差/章动修正 + 加速度零偏）：
-         * 基线中位 55.0 km → 修正后 33.0 km（留一会话交叉验证 42.1 km）。
-         * 默认开启；传 null 可显式关闭。
+         * 代码级默认：**零修正**（不再内置任何调试机标定值）。
+         * 真机参数由 DeviceParams 在首次安装时写入 filesDir/star-vertical.json（零值），
+         * 之后由标定/用户流程写入；升级不覆盖已有文件。
          */
         val DEFAULT: StarVertical = StarVertical(
-            doubleArrayOf(
-                Math.toRadians(2.974), Math.toRadians(-0.034), Math.toRadians(-4.835),
-            ),
-            note = "2026-11-24 重拟合（岁差/章动修正 + 零偏扣除）",
-            source = "builtin-default-20261124",
+            doubleArrayOf(0.0, 0.0, 0.0),
+            note = "未标定（代码默认零修正）",
+            source = "default-zero",
         )
 
         fun load(file: File): StarVertical? {

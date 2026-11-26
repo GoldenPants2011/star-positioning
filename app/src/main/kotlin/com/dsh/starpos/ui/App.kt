@@ -40,6 +40,7 @@ private enum class AppTab(val title: String, val glyph: String) {
     HOME("首页", "⌂"),
     CAPTURE("采集", "◎"),
     SESSIONS("会话", "▤"),
+    RESULTS("结果", "◈"),
     SETTINGS("设置", "⚙"),
 }
 
@@ -48,7 +49,6 @@ fun StarPosApp() {
     val context = LocalContext.current
     var tab by remember { mutableStateOf(AppTab.HOME) }
     var showSelfCheck by remember { mutableStateOf(false) }
-    var showResults by remember { mutableStateOf(false) }
     var showLogs by remember { mutableStateOf(false) }
     var showPresets by remember { mutableStateOf(false) }
     var showCleanup by remember { mutableStateOf(false) }
@@ -72,11 +72,6 @@ fun StarPosApp() {
                 CleanupScreen(onBack = { showCleanup = false })
             } else if (showPresets) {
                 PresetScreen(onBack = { showPresets = false })
-            } else if (showResults) {
-                ResultsScreen(
-                    onBack = { showResults = false },
-                    onOpenSessions = { showResults = false; tab = AppTab.SESSIONS },
-                )
             } else {
                 Column(Modifier.fillMaxSize().statusBarsPadding()) {
                     Box(Modifier.weight(1f).fillMaxWidth()) {
@@ -86,7 +81,11 @@ fun StarPosApp() {
                                 onOpenSessions = { tab = AppTab.SESSIONS },
                             )
                             AppTab.CAPTURE -> FieldScreen(onOpenCleanup = { showCleanup = true })
-                            AppTab.SESSIONS -> SessionsScreen(onOpenResults = { showResults = true }, onOpenCleanup = { showCleanup = true })
+                            AppTab.SESSIONS -> SessionsScreen(onOpenResults = { tab = AppTab.RESULTS }, onOpenCleanup = { showCleanup = true })
+                            AppTab.RESULTS -> ResultsScreen(
+                                onBack = { tab = AppTab.SESSIONS },
+                                onOpenSessions = { tab = AppTab.SESSIONS },
+                            )
                             AppTab.SETTINGS -> SettingsScreen(
                                 nightMode = night,
                                 onNightModeChange = { night = it; prefs.edit().putBoolean("night", it).apply() },

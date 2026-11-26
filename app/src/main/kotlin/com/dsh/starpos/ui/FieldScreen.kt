@@ -296,7 +296,7 @@ fun FieldScreen(onOpenCleanup: (() -> Unit)? = null) {
             listOf(
                 "预检" to (state.preflightDone && state.cameraLine.isNotBlank()),
                 "GNSS 真值" to state.gnssReady,
-                "标定" to (state.extrinsicText.startsWith("已载入") && AccelBiasStore.load(context) != null),
+                "标定" to (state.extrinsicText.startsWith("已载入") && AccelBiasStore.load(context)?.calibrated == true),
             ).forEach { (label, ok) ->
                 Row(
                     Modifier
@@ -1178,6 +1178,15 @@ fun FieldScreen(onOpenCleanup: (() -> Unit)? = null) {
                                     )
                                 }
                                 Text("外参：${state.extrinsicText}", color = if (state.extrinsicText.startsWith("已载入")) FieldOk else FieldWarn, fontSize = 11.sp)
+                                val sv = runCatching { com.dsh.starpos.android.DeviceParams.starVertical(context) }.getOrNull()
+                                val svOn = appPrefs.getBoolean("star_vertical", true)
+                                val svDeg = sv?.magnitudeDeg ?: 0.0
+                                Text(
+                                    "星垂修正：" + (if (svOn) "开" else "关") + " · " +
+                                        (if (svDeg < 0.005) "0.00°（未标定/首次置零）" else "%.2f°".format(svDeg)),
+                                    color = if (svOn && svDeg >= 0.005) FieldOk else FieldWarn,
+                                    fontSize = 11.sp,
+                                )
                                 val biasEntry = runCatching { AccelBiasStore.load(context) }.getOrNull()
                                 Text(
                                     "IMU 零偏：" + (biasEntry?.let { b ->
@@ -1187,9 +1196,10 @@ fun FieldScreen(onOpenCleanup: (() -> Unit)? = null) {
                                         val tilt = Math.toDegrees(
                                             Math.atan(Math.sqrt(mg[0] * mg[0] + mg[1] * mg[1] + mg[2] * mg[2]) / 1019.7),
                                         )
-                                        "(%.1f, %.1f, %.1f) mg · 等效倾斜 %.2f°".format(mg[0], mg[1], mg[2], tilt)
+                                        "(%.1f, %.1f, %.1f) mg · 等效倾斜 %.2f°".format(mg[0], mg[1], mg[2], tilt) +
+                                            if (b.calibrated) "" else " · 未标定（首次置零）"
                                     } ?: "未标定（去「标定」标签做六位置法）"),
-                                    color = if (biasEntry != null) FieldOk else FieldWarn,
+                                    color = if (biasEntry?.calibrated == true) FieldOk else FieldWarn,
                                     fontSize = 11.sp,
                                 )
                                 clock?.let {

@@ -141,7 +141,7 @@ fun ResultsScreen(onBack: () -> Unit, onOpenSessions: () -> Unit) {
         status = "正在读取 ${files.size} 个包并提取观测…"
         scope.launch {
             val datas = withContext(Dispatchers.IO) {
-                files.map { f -> SessionJointAnalyzer.extract(context, f, if (starVertical) StarVertical.DEFAULT else null, treatAsMirror = manualMirror) }
+                files.map { f -> SessionJointAnalyzer.extract(context, f, if (starVertical) com.dsh.starpos.android.DeviceParams.starVertical(context) else null, treatAsMirror = manualMirror) }
             }
             extracted = datas.associateBy { it.file.name }
             val obs = datas.flatMap { it.observations }

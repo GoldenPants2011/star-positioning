@@ -857,12 +857,15 @@ class FieldSessionController(private val context: Context) {
                     clock = clock,
                     error = null,
                     extrinsicText = com.dsh.starpos.field.ExtrinsicConfig.load(context)?.let {
-                        val how = when (it.source) {
-                            "asset-default" -> "APK 内置"
-                            "app-handeye" -> "App 自标定"
-                            else -> it.source
+                        if (it.source == "default-zero") {
+                            "未标定（0.00°，首次置零）"
+                        } else {
+                            val how = when (it.source) {
+                                "app-handeye" -> "App 自标定"
+                                else -> it.source
+                            }
+                            "已载入（%.2f°，%s）".format(it.angleDeg, how)
                         }
-                        "已载入（%.2f°，%s）".format(it.angleDeg, how)
                     } ?: "未标定（单历元位置误差可达数百 km）",
                 )
             }.onFailure { e ->

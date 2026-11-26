@@ -5396,3 +5396,15 @@ r_pred = u_direct − 2(u_direct·n)n            // 应在水平面下方
   - 长期脱网一年的 70 s 偏差约 2.2 ppm；App 离线时只能按 30 ppm 保守估计 + 7 天未对时判 `STALE_TIME`，不能自动修正；
   - 给出目标误差对应的时钟要求（50 m→<0.12 s、500 m→<1.2 s、5 km→<12 s）和"外场前必须对时"的操作口径。
 - 仅文档变更，代码/APK 不变。
+
+
+## 153. 设备参数外置零值 + 预检星垂 + 结果页第 4 个 Tab（0.9.89）
+
+- 移除 APK 内置调试机参数资产 `extrinsic-default.json` / `star-vertical-default.json`；
+- 新增 `android/DeviceParams.kt`：
+  - 首次安装/升级在 `filesDir` 只补缺失文件：`star-vertical.json`、`extrinsic.json`、`accel-bias.json`，值全零/单位矩阵；
+  - 已有文件（含外部私有目录）一律不覆盖；`StarVertical.DEFAULT` 改为零修正；
+  - `AccelBiasStore` 增加 `calibrated`，零值文件不算已标定；
+- 预检显示「星垂修正：开/关 · x.xx°（未标定/首次置零）」；
+- 底部导航增加「结果」Tab，顺序为 首页/采集/会话/结果/设置（5 个）；
+- 真机验证：升级安装保留原有 `accel-bias.json`（11-22），新建 zero 外参/星垂文件；预检显示 0.00°；5 个底部按钮正常。

@@ -65,32 +65,18 @@ class ExtrinsicConfig(
         const val FILE = "extrinsic.json"
 
         /**
-         * 查找顺序：
+         * 查找顺序（不再从 APK assets 读取任何调试机参数）：
          *  1. 内部私有目录（App 自标定写入，`/data/data/<pkg>/files/extrinsic.json`）
          *  2. 外部私有目录（adb push 方便，`/sdcard/Android/data/<pkg>/files/extrinsic.json`）
-         *  3. **APK 内置资产**（`assets/extrinsic-default.json`）——卸载重装后仍然存在，
-         *     避免"重装后外参丢失导致定位偏几百公里"（2026-11-19 实际踩到）。
+         * 首次安装由 DeviceParams 写入零值文件；升级不覆盖已有文件。
          */
         fun load(context: Context): ExtrinsicConfig? {
             load(File(context.filesDir, FILE))?.let { return it }
             context.getExternalFilesDir(null)?.let { dir ->
                 load(File(dir, FILE))?.let { return it }
             }
-            return loadAsset(context)
+            return null
         }
-
-        private fun loadAsset(context: Context): ExtrinsicConfig? = runCatching {
-            val text = context.assets.open("extrinsic-default.json").bufferedReader().use { it.readText() }
-            val m = JsonText.parse(text).asMap()
-            val mMatrix = (m["m"] as? List<*>)?.mapNotNull { (it as? Number)?.toDouble() }
-                ?.takeIf { it.size == 9 }?.toDoubleArray()
-            val cfg = ExtrinsicConfig(
-                rx = m.num("rx"), ry = m.num("ry"), rz = m.num("rz"),
-                note = m.str("note"), source = "asset-default",
-                m = mMatrix,
-            )
-            if (cfg.angleDeg > MAX_PLAUSIBLE_DEG) null else cfg
-        }.getOrNull()
 
         /** 合理的修正量上限：超过 15° 说明标定数据有问题，直接忽略（沿用下一来源）。 */
         private const val MAX_PLAUSIBLE_DEG = 15.0

@@ -13,6 +13,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         DiagLog.init(this)
         DiagLog.i("App", "MainActivity.onCreate")
+        com.dsh.starpos.android.DeviceParams.ensureInitialized(this)
         com.dsh.starpos.android.AccelBiasStore.loadAndApply(this)
         setContent { StarPosApp() }
     }

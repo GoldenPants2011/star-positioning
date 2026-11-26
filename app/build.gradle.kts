@@ -6,8 +6,8 @@ plugins {
 }
 
 // 版本号集中在这里：既进 APK 元数据，也进产物文件名
-val appVersionCode = 140
-val appVersionName = "0.9.88-M2"
+val appVersionCode = 141
+val appVersionName = "0.9.89-M2"
 
 android {
   namespace = "com.dsh.starpos"
