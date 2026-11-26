@@ -184,25 +184,9 @@ docs/                      需求/UI 截图等
 - `docs/ui/*.png`：主要界面真机截图；
 - `calibration-pattern/dot-grid-9x13-20mm-A4.pdf/.png`：内参点阵。
 
-
 ---
 
-## 9. 本地备份建议
-
-- **需要单独备份**：GitHub 当前推送受阻，且仓库为私有；本机磁盘损坏会同时丢失代码、未推送提交与现场数据。
-- 建议至少两份、离线/异地：
-  1. **源码**：`git bundle create starpos-backup.bundle --all`（可离线恢复全部历史），
-     外加一份去掉 `build/`、`.gradle/`、`app/build/`、`*.apk` 的工作区副本；
-  2. **现场数据**：`field-inbox/` 与设备 `sessions/` 单独加密归档（含个人位置信息），
-     按"原始 ZIP 必留、原始目录可弃（可重打包）"控制体积；
-  3. **关键资产**：星表、点阵、`config/`、签名/发布说明单独保存。
-- 频率：每次外场采集/版本里程碑后各一次；至少保留最近 2–3 份，且**定期做恢复演练**。
-- 不要把私钥、PAT、设备备份、现场位置数据放进公开仓库；开源前先清理历史。
-- 网络可用时推送 `ui-redesign` 与 `opensource-prep`，可减少对本地备份的依赖（但不替代离线备份）。
-
----
-
-## 10. 许可证
+## 9. 许可证
 
 本项目以 **GNU General Public License v3.0 或更新版本（GPL-3.0-or-later）** 发布，
 完整条款见 [LICENSE](LICENSE)。
