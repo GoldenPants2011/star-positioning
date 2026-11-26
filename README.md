@@ -218,3 +218,25 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   与 GPLv3 兼容；JUnit 仅用于测试。详见 [THIRD-PARTY.md](THIRD-PARTY.md)。
 
 SPDX 标识：`GPL-3.0-or-later`（代码） · `CC-BY-SA-4.0`（星表数据）
+
+---
+
+## 10. 发布构建（release 签名）
+
+发布签名密钥**不放进仓库**，通过环境变量提供：
+
+```powershell
+$env:STARPOS_RELEASE_STORE_FILE="D:\\path\\to\\starpos-release.jks"
+$env:STARPOS_RELEASE_STORE_PASSWORD="..."
+$env:STARPOS_RELEASE_KEY_ALIAS="starpos-release"
+$env:STARPOS_RELEASE_KEY_PASSWORD="..."
+.\gradlew.bat :app:assembleRelease
+```
+
+产物：`app/build/outputs/apk/release/starpos-<version>-release.apk`。
+
+未设置这些环境变量时，release 会退回 debug 签名（仅用于现场测试，不能作为正式发布签名）。
+签名密钥和密码必须离线备份；丢失后将无法再更新已发布应用。
+
+> 从 debug 签名版本切换到正式 release 签名版本时，Android 会因签名不同拒绝覆盖安装，
+> 需要先卸载旧 debug 版本。

@@ -22,19 +22,31 @@ android {
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
+  // 发布签名不写进仓库：通过环境变量提供（见 README「发布构建」）。
+  val releaseStore = System.getenv("STARPOS_RELEASE_STORE_FILE")
+  val hasReleaseSigning = !releaseStore.isNullOrBlank()
+
   signingConfigs {
-    // 现场测试用：release 也用 debug 签名，方便直接安装（不是发布包）
+    // 现场测试用：没有发布密钥时，release 仍用 debug 签名，方便直接安装（不是正式发布包）
     create("field") {
       storeFile = File(System.getenv("ANDROID_USER_HOME") ?: (System.getProperty("user.home") + "/.android"), "debug.keystore")
       storePassword = "android"
       keyAlias = "androiddebugkey"
       keyPassword = "android"
     }
+    create("release") {
+      if (hasReleaseSigning) {
+        storeFile = file(releaseStore!!)
+        storePassword = System.getenv("STARPOS_RELEASE_STORE_PASSWORD")
+        keyAlias = System.getenv("STARPOS_RELEASE_KEY_ALIAS")
+        keyPassword = System.getenv("STARPOS_RELEASE_KEY_PASSWORD")
+      }
+    }
   }
 
   buildTypes {
     release {
-      signingConfig = signingConfigs.getByName("field")
+      signingConfig = if (hasReleaseSigning) signingConfigs.getByName("release") else signingConfigs.getByName("field")
       isMinifyEnabled = false
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }

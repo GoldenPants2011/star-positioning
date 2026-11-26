@@ -5374,3 +5374,16 @@ r_pred = u_direct − 2(u_direct·n)n            // 应在水平面下方
 - 结果页截图（含经纬度/UTM）18 张已移到项目外 `star-positioning-private-screenshots/`，
   仓库只保留不含坐标的界面图。
 - 公开前建议：**删除 GitHub 旧仓库并新建**（或联系 GitHub 清理未引用对象），确保按旧 SHA 也无法访问历史对象。
+
+
+## 151. 正式 release 签名（2026-11-26）
+
+- 生成 release keystore（RSA 4096，有效期 10000 天），放在项目外私有目录：
+  `D:\Documents\deepseek-harness\default-workspace\.private\starpos-release\`；
+- 证书 SHA-256：`25:F9:13:01:86:C8:AC:E5:F7:90:C8:E1:61:CB:DC:34:A6:81:E0:B7:CD:AC:E6:2D:34:7C:31:34:4E:5F:01:2A`；
+- `app/build.gradle.kts` 增加 env 驱动的 release signingConfig：
+  `STARPOS_RELEASE_STORE_FILE / _STORE_PASSWORD / _KEY_ALIAS / _KEY_PASSWORD`；
+  未设置时回退 debug 签名（仅现场测试）；
+- 已构建 `starpos-0.9.88-M2-release.apk`（约 25.9 MB），`apksigner verify --print-certs` 证书与 keystore 一致；
+- 由于 debug → release 签名不同，升级需先卸载旧 debug 版本；
+- keystore 与密码绝对不要提交/公开；需离线备份。
