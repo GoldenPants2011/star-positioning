@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  星光定位 App 图标/主视觉（自设计，无版权依赖）：
+  - 中心四角星：视场内被识别/锁定的星
+  - 下方地平弧线 + 两侧刻度：水平面与"高度角"
+  - 外圈细环：天球/光学视场
+  颜色与 App 暗色主题一致（蓝 #7FB2FF / 琥珀 #FFC15E）。
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 外圈 -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#7FB2FF"
+        android:strokeAlpha="0.55"
+        android:strokeWidth="2"
+        android:pathData="M54,9 A45,45 0 1,1 53.9,9" />
+
+    <!-- 四角星 -->
+    <path
+        android:fillColor="#FFC15E"
+        android:pathData="M54,17 L61.5,44 L88,51 L61.5,58 L54,85 L46.5,58 L20,51 L46.5,44 Z" />
+
+    <!-- 中心亮点 -->
+    <path
+        android:fillColor="#FFF3D6"
+        android:pathData="M54,45 A6,6 0 1,1 53.9,45 Z" />
+
+    <!-- 地平弧线 -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#7FB2FF"
+        android:strokeWidth="2.6"
+        android:strokeLineCap="round"
+        android:pathData="M14,74 Q54,88 94,74" />
+
+    <!-- 两侧高度角刻度 -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#7FB2FF"
+        android:strokeAlpha="0.5"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M16,88 h10 M82,88 h10 M54,95 v7" />
+</vector>

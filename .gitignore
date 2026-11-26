@@ -1,0 +1,22 @@
+# === 现场数据（含位置隐私、体积大）===
+field-inbox/
+# === 备份快照（不纳入版本库）===
+0.9.16bak/
+# === 构建产物 ===
+.gradle/
+build/
+app/build/
+.kotlin/
+local.properties
+*.apk
+*.aab
+*.iml
+.idea/
+# === 系统/工具 ===
+Thumbs.db
+.DS_Store
+__pycache__/
+*.pyc
+
+# === 真实照片验证素材（已移出项目，不纳入版本库）===
+real-images/
