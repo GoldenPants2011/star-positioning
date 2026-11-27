@@ -88,8 +88,13 @@ object SessionJointAnalyzer {
                         if (g.isEmpty()) null else Triple(g.sumOf { it.lat } / g.size, g.sumOf { it.lon } / g.size, g.sumOf { it.accuracyM } / g.size)
                     }
                     val catalog = CatalogHolder.catalog(context)
+                    // 老包 manifest 没有记录加速度零偏/映射：必须把本机已标定的兜底值传进去，
+                    // 否则重力天顶会系统偏 ~1.4°，星光单包可差 200 km 量级。
+                    val bias = AccelBiasStore.load(context)?.bias
+                    val map = AccelBiasStore.loadMap(context)
                     val analysis = FieldAnalyzer.analyze(
                         reader, catalog, ExtrinsicConfig.load(context), starVertical,
+                        accelBiasOverride = bias, accelMapOverride = map,
                     )
                     val fixes = analysis.frames.mapNotNull { f ->
                         val fx = f.fix ?: return@mapNotNull null

@@ -5415,3 +5415,14 @@ r_pred = u_direct − 2(u_direct·n)n            // 应在水平面下方
 - 结果页改为常驻组合（App shell 第一个子节点，非结果 Tab 用 0dp 隐藏）：解算结果、勾选、展开列表、镜像标记等状态切换 Tab 后保留。
 - 隐藏时 BackHandler 禁用，不拦截其他页返回键。
 - 源码已过快测试；公开发布 APK 尚未重打（设备仍为 0.9.89 正式包）。
+
+
+## 155. 真机 034851 误差巨大的根因与修复（0.9.90）
+
+- 现象：同一 `session-20261120-034851` 在全量离线报告里中位 ~8.6 km，但真机结果页单包解算误差约 200 km。
+- 根因：`SessionJointAnalyzer` 星光分支调用 `FieldAnalyzer.analyze(...)` 时**没有传 accelBiasOverride/accelMapOverride**；
+  该包 manifest 没有记录零偏（老包），`FieldAnalyzer` 里全局 `accelBias` 也未对星光分支生效，
+  导致重力天顶少扣 ~1.4° → 位置差约 200 km。全量报告传了兜底零偏，所以看起来正常。
+- 修复：星光分支读取 `AccelBiasStore.load(context)?.bias` / `loadMap`，显式传入 `analyze`；
+- 验证：真机同包单包解算从约 200 km → **18.9 km（T1）**；离线带零偏约 13.5–16 km；
+- 与另一个子项目无关：`git diff v0.9.89-M2` 仅 UI/文档改动，求解器未被他处改写。
