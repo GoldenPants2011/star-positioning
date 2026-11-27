@@ -58,13 +58,32 @@ object SessionJointAnalyzer {
         val mirrorReport: MirrorReport? = null,
     )
 
-    fun kindOf(file: File): String = when {
-        file.name.startsWith("sun-") -> "sun"
-        file.name.startsWith("moon-") -> "moon"
-        file.name.startsWith("star-") -> "star"
-        file.name.startsWith("ext-") -> "ext"
-        file.name.startsWith("cal-") -> "cal"
-        else -> "legacy"
+    fun kindOf(file: File): String {
+        when {
+            file.name.startsWith("sun-") -> return "sun"
+            file.name.startsWith("moon-") -> return "moon"
+            file.name.startsWith("star-") -> return "star"
+            file.name.startsWith("ext-") -> return "ext"
+            file.name.startsWith("cal-") -> return "cal"
+        }
+        // 旧包没有类型前缀：从 manifest 的备注/曝光/ISO 推断，避免把星光包当月亮解
+        return runCatching {
+            BundleReader.open(file).use { reader ->
+                val m = reader.manifest
+                val note = m.note
+                when {
+                    note.contains("EXTRINSIC", true) || note.contains("CALIBRATION", true) ||
+                        note.contains("标定", true) -> "cal"
+                    note.contains("SUN", true) || note.contains("太阳", true) -> "sun"
+                    note.contains("MOON", true) || note.contains("月亮", true) -> "moon"
+                    else -> {
+                        val exp = (m.capture["requested_exposure_ns"] as? Number)?.toLong() ?: 0L
+                        val iso = (m.capture["requested_iso"] as? Number)?.toInt() ?: 0
+                        if (exp >= 500_000_000L && iso >= 1600) "star" else "legacy"
+                    }
+                }
+            }
+        }.getOrDefault("legacy")
     }
 
     fun extract(context: Context, file: File, starVertical: StarVertical? = null, treatAsMirror: Boolean = false): SessionData {

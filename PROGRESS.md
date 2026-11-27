@@ -5426,3 +5426,12 @@ r_pred = u_direct − 2(u_direct·n)n            // 应在水平面下方
 - 修复：星光分支读取 `AccelBiasStore.load(context)?.bias` / `loadMap`，显式传入 `analyze`；
 - 验证：真机同包单包解算从约 200 km → **18.9 km（T1）**；离线带零偏约 13.5–16 km；
 - 与另一个子项目无关：`git diff v0.9.89-M2` 仅 UI/文档改动，求解器未被他处改写。
+
+
+## 156. 旧包类型推断修复（0.9.91）
+
+- 034851 是**无前缀旧包**，之前 `kindOf` 只按文件名返回 legacy，结果页把它送进日月高度分支，
+  用月面拟合得到 5 条假高度观测，误差 7614 km。
+- 修复 `kindOf`：旧包打开 manifest，按备注（SUN/太阳、MOON/月亮、EXTRINSIC/CALIBRATION/标定）
+  与曝光/ISO（≥500 ms 且 ISO≥1600 → star）推断类型；低曝光无备注仍交日月分支。
+- 新增 `SessionKindTest`：034851→star、日月旧包→legacy、SUN 包→sun、标定包→cal。

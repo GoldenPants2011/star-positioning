@@ -1,6 +1,6 @@
 # 星光定位（Star Position）· 现场采集与离线定位工作台
 
-> 包名：`com.dsh.starpos` · 当前版本：`0.9.90-M2` · minSdk 30 / targetSdk 37
+> 包名：`com.dsh.starpos` · 当前版本：`0.9.91-M2` · minSdk 30 / targetSdk 37
 > 仓库：私有（**不公开分发**） · 分支：`ui-redesign` / `opensource-prep`
 >
 > 接手/续做请先读 **[PROGRESS.md](PROGRESS.md)**（进度、决策、踩坑、下一步）。
