@@ -65,8 +65,8 @@ import kotlin.math.sin
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ResultsScreen(onBack: () -> Unit, onOpenSessions: () -> Unit) {
-    BackHandler { onBack() }
+fun ResultsScreen(onBack: () -> Unit, onOpenSessions: () -> Unit, backEnabled: Boolean = true) {
+    BackHandler(enabled = backEnabled) { onBack() }
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("starpos", android.content.Context.MODE_PRIVATE) }
     val coordDms = remember { prefs.getString("coord_format", "dec") == "dms" }
@@ -332,7 +332,21 @@ fun ResultsScreen(onBack: () -> Unit, onOpenSessions: () -> Unit) {
         item {
             Card(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 6.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF101A2A))) {
                 Column(Modifier.padding(12.dp)) {
-                    Text("已勾选（${selected.size}）", color = AppAccent, fontSize = 12.sp)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("已勾选（${selected.size}）", color = AppAccent, fontSize = 12.sp)
+                        Spacer(Modifier.weight(1f))
+                        if (selected.isNotEmpty()) {
+                            Text(
+                                "取消全部勾选",
+                                color = AppWarn,
+                                fontSize = 11.sp,
+                                modifier = Modifier.clickable {
+                                    selected = emptySet()
+                                    status = "已取消全部勾选"
+                                }.padding(6.dp),
+                            )
+                        }
+                    }
                     if (selected.isEmpty()) {
                         Text("尚未勾选采集包", color = AppDim, fontSize = 10.sp)
                     } else {

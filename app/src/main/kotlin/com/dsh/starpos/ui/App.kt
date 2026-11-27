@@ -75,32 +75,43 @@ fun StarPosApp() {
             } else {
                 Column(Modifier.fillMaxSize().statusBarsPadding()) {
                     Box(Modifier.weight(1f).fillMaxWidth()) {
-                        when (tab) {
-                            AppTab.HOME -> HomeScreen(
-                                onOpenCapture = { tab = AppTab.CAPTURE },
-                                onOpenSessions = { tab = AppTab.SESSIONS },
-                            )
-                            AppTab.CAPTURE -> FieldScreen(onOpenCleanup = { showCleanup = true })
-                            AppTab.SESSIONS -> SessionsScreen(onOpenResults = { tab = AppTab.RESULTS }, onOpenCleanup = { showCleanup = true })
-                            AppTab.RESULTS -> ResultsScreen(
+                        // 结果页常驻组合（放在第一个子节点，保证切换 Tab 时组合身份不变、状态不重置）
+                        Box(
+                            Modifier.then(
+                                if (tab == AppTab.RESULTS) Modifier.fillMaxSize() else Modifier.size(0.dp),
+                            ),
+                        ) {
+                            ResultsScreen(
                                 onBack = { tab = AppTab.SESSIONS },
                                 onOpenSessions = { tab = AppTab.SESSIONS },
+                                backEnabled = tab == AppTab.RESULTS,
                             )
-                            AppTab.SETTINGS -> SettingsScreen(
-                                nightMode = night,
-                                onNightModeChange = { night = it; prefs.edit().putBoolean("night", it).apply() },
-                                colorAssist = colorAssist,
-                                onColorAssistChange = {
-                                    colorAssist = it
-                                    prefs.edit().putBoolean("color_assist", it).apply()
-                                },
-                                onOpenSelfCheck = { showSelfCheck = true },
-                                onOpenLogs = { showLogs = true },
-                                onOpenPresets = { showPresets = true },
-                                onOpenCleanup = { showCleanup = true },
-                                onOpenCapture = { tab = AppTab.CAPTURE },
-                                onOpenSessions = { tab = AppTab.SESSIONS },
-                            )
+                        }
+                        if (tab != AppTab.RESULTS) {
+                            when (tab) {
+                                AppTab.HOME -> HomeScreen(
+                                    onOpenCapture = { tab = AppTab.CAPTURE },
+                                    onOpenSessions = { tab = AppTab.SESSIONS },
+                                )
+                                AppTab.CAPTURE -> FieldScreen(onOpenCleanup = { showCleanup = true })
+                                AppTab.SESSIONS -> SessionsScreen(onOpenResults = { tab = AppTab.RESULTS }, onOpenCleanup = { showCleanup = true })
+                                AppTab.SETTINGS -> SettingsScreen(
+                                    nightMode = night,
+                                    onNightModeChange = { night = it; prefs.edit().putBoolean("night", it).apply() },
+                                    colorAssist = colorAssist,
+                                    onColorAssistChange = {
+                                        colorAssist = it
+                                        prefs.edit().putBoolean("color_assist", it).apply()
+                                    },
+                                    onOpenSelfCheck = { showSelfCheck = true },
+                                    onOpenLogs = { showLogs = true },
+                                    onOpenPresets = { showPresets = true },
+                                    onOpenCleanup = { showCleanup = true },
+                                    onOpenCapture = { tab = AppTab.CAPTURE },
+                                    onOpenSessions = { tab = AppTab.SESSIONS },
+                                )
+                                AppTab.RESULTS -> Unit
+                            }
                         }
                     }
                     NavigationBar(containerColor = card, contentColor = accent) {
